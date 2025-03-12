@@ -6,7 +6,7 @@ const app = express()
 const port = 8080
 
 //to test
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
   res.json('Hello (from server)')
 })
 
