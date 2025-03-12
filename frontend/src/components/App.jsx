@@ -1,28 +1,27 @@
-import '../styles/App.css';
-
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
+import "../styles/App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 /** import components */
-import Main from './Main';
+import Main from "./Main.jsx";
+import Quiz from "./Quiz.jsx";
+import Result from "./Result.jsx";
 
 /** react routes */
 const router = createBrowserRouter([
   {
-    path : '/',
-    element : <Main></Main>
+    path : "/",
+    element : <Main></Main>,
   },
   {
-    path : '/quiz',
-    element : <div>Quiz Component</div>
+    path: "/quiz",
+    element: <Quiz></Quiz>,
   },
   {
-    path : '/result',
-    element : <div>result Component</div>
-  }
-])
+    path: "/result",
+    element: <Result></Result>,
+  },
+]);
 
 function App() {
-
   // async function test() {
   //   const response = await fetch('http://localhost:8080/test')
   //   console.log(response)
@@ -34,9 +33,9 @@ function App() {
 
   return (
     <>
-       <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
