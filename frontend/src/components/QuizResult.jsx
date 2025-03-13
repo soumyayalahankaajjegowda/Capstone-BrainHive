@@ -6,7 +6,7 @@ import ResultTable from './ResultTable';
 import { useDispatch, useSelector } from 'react-redux';
 
 /** import actions  */
-import { resetAllAction } from '../redux/question_reducer';
+import { resetAllAction } from '../redux/Question_reducer'
 import { resetResultAction } from '../redux/result_reducer';
 
 export default function Result() {
@@ -48,7 +48,7 @@ export default function Result() {
         </div>
         <div className='flex'>
           <span>Total Questions: </span>
-          <span className='bold'>{queue.length || 0}<span>
+          <span className='bold'>{queue.length || 0}</span>
         </div>
         <div className='flex'>
           <span>Total Attempts : </span>

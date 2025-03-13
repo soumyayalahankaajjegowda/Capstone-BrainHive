@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from 'react-redux'
-import { setUserId } from '../redux'
+import { setUserId } from '../redux/Result_reducer'
 import '../styles/Main.css'
 
 export default function Main() {

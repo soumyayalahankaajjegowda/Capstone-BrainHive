@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { getServerData } from '../helper/helper'
+//import { getServerData } from '../helper/helper'
 
 
 export default function ResultTable() {
