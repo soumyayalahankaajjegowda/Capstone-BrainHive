@@ -1,9 +1,18 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from 'react-redux'
+import { setUserId } from '../redux'
 import '../styles/Main.css'
 
 export default function Main() {
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
+
+  function startQuiz() {
+    if(inputRef.current?.value){
+      dispatch(setUserId(inputRef.current?.value))
+    }
+  }
 
   return (
     <div className="container">
@@ -19,7 +28,7 @@ export default function Main() {
         <li>The result will be declared at the end of the quit.</li>
       </ol>
 
-      <form id="from">
+      <form id="form">
         <input ref={inputRef} className="userid" type="text" placeholder="Username*" />
       </form>
 
