@@ -26,5 +26,5 @@ function onPrevious(){
 
       </div>
     </div>
-  )
+  );
 }

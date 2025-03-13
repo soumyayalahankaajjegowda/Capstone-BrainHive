@@ -1,7 +1,7 @@
 import "../styles/App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 /** import components */
-import Main from "../components/index.jsx";
+import Main from "./Home.jsx";
 import Quiz from "../components/Quiz.jsx";
 import Result from "../components/Result.jsx";
 
