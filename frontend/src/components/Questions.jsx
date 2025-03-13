@@ -1,16 +1,19 @@
 import React, { useState, useEffect} from 'react'
+import data from '../database/Data'
 
 
 export default function Questions() {
 
   const [checked, setChecked] = useState(undefined)
 
+  const question = data[0]
+
   useEffect(() => {
-      console.log(question)
+      //console.log(question)
   })
 
   function onSelect() {
-      console.log('ratio button change')
+     // console.log('ratio button change')
   }
 
     return (
