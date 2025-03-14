@@ -1,11 +1,13 @@
 import React, { useState, useEffect} from 'react'
 import data from '../database/Data'
 
+/** Custom Hook */
+import { useFetchQuestion } from '../hooks/FetchQuestion'
 
 export default function Questions() {
 
   const [checked, setChecked] = useState(undefined)
-
+  const [{ isLoading, apiData, serverError}, ] = useFetchQuestion()
   const question = data[0]
 
   useEffect(() => {

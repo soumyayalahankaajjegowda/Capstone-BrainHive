@@ -1,16 +1,17 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux'
-import { setUserId } from '../redux/Result_reducer'
-import '../styles/Main.css'
+import { useDispatch } from "react-redux";
+import { setUserId } from "../redux/result_reducer";
+import "../styles/Main.css";
 
-export default function Main() {
+function Main() {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
 
-  function startQuiz() {
-    if(inputRef.current?.value){
-      dispatch(setUserId(inputRef.current?.value))
+  function startQuiz(event) {
+    event.preventDefault(); // prevent form from submitting/reloading
+    if (inputRef.current?.value.trim()) {
+      dispatch(setUserId(inputRef.current?.value.trim())); //Trim unnecessary spaces
     }
   }
 
@@ -28,13 +29,25 @@ export default function Main() {
         <li>The result will be declared at the end of the quit.</li>
       </ol>
 
-      <form id="form">
-        <input ref={inputRef} className="userid" type="text" placeholder="Username*" />
+      <form id="form" onSubmit={startQuiz}>
+        <input
+          ref={inputRef}
+          className="userid"
+          type="text"
+          placeholder="Username*"
+        />
+        <button className="btn" type="submit">
+          Start Quiz
+        </button>
       </form>
 
-      <div className="start">
-        <Link className="btn" to={"quiz"} onClick={startQuiz}>Start Quiz</Link>
-        </div>
+      {/* <div className="start">
+        <Link className="btn" to={"quiz"} onClick={startQuiz}>
+          Start Quiz
+        </Link>
+      </div> */}
     </div>
   );
 }
+
+export default Main;
