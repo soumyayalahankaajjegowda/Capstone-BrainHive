@@ -1,31 +1,24 @@
-import React from "react";
-import axios from 'axios';
-import Questions from "../components/Questions";
-
-
-
-import { Navigate } from 'react-router-dom'
+import React, { useState} from "react";
+import Questions from '../components/Questions';
+import { useQuiz } from '../context/QuizContext';
+import { Navigate } from 'react-router-dom';
 
 export default function Quiz() {
 
-  const [check, setChecked] = useState(undefined)
-
-  const result = useSelector(state => state.result.result);
-  const { queue, trace } = useSelector(state => state.questions);
-  const dispatch = useDispatch()
-
-  //const state = useSelector(state => state)
+  const [checked, setChecked] = useState(undefined);
+  const { questions, result, pushAnswer, moveNext, movePrevious } = useQuiz();
+  const { queue, trace } = questions;
+ 
 
   /** next button eventhandler */
   function onNext() {
     //console.log("On next click");
-    if(trace < queue.length){
+    if(trace < queue.length - 1){
       /** increase the trace value by one using MoveNextAction */
-      dispatch(MoveNextQuestion());
-
+      moveNext();
       /** insert a new result in the array.  */
       if(result.length <= trace){
-          dispatch(PushAnswer(check))
+          pushAnswer(checked);
       }
   }
 
@@ -39,12 +32,12 @@ export default function Quiz() {
     //console.log("On next click");
     if(trace > 0){
       /** decrease the trace value by one using MovePrevQuestion */
-      dispatch(MovePrevQuestion());
+     movePrevious();
   }
 }
 
 function onChecked(check){
-  setChecked(check)
+  setChecked(check);
 }
 
 /** finished exam after the last question */

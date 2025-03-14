@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Main.css";
-import { useQuizContext } from '../context/useQuizContext';
+import { useQuiz } from '../context/QuizContext';
 
 function Main() {
-  const inputRef = useRef<HTMLINPUTElement>(null);
-  const { setUserId } = useQuizContext();
+  const inputRef = useRef(null);
+  const { setUserId } = useQuiz();
 
   function startQuiz() {
        if (inputRef.current?.value) {
@@ -27,7 +27,7 @@ function Main() {
         <li>The result will be declared at the end of the quit.</li>
       </ol>
 
-      <form id="form" onSubmit={startQuiz}>
+      <form id="form">
         <input
           ref={inputRef}
           className="userid"
@@ -36,7 +36,7 @@ function Main() {
         />
         </form>
          <div className="start">
-        <Link className="btn" to="/quiz" onClick={startQuiz}>
+        <Link className="btn" to={"/quiz"} onClick={startQuiz}>
           Start Quiz
         </Link>
       </div> 

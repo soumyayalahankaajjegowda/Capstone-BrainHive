@@ -1,20 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../styles/Result.css";
 import { Link } from "react-router-dom";
 
 import ResultTable from "./ResultTable";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuiz } from '../context/QuizContext';
+import { attempts_Number, earnPoints_Number, flagResult } from '../helpers/helper';
+import { usePublishResult } from '../hooks/setResult';
 
-/** import actions  */
-import { resetAllAction } from "../redux/question_reducer";
-import { resetResultAction } from "../redux/result_reducer";
+// /** import actions  */
+// import { resetAllAction } from "../redux/question_reducer";
+// import { resetResultAction } from "../redux/result_reducer";
 
 export default function Result() {
-  const dispatch = useDispatch();
-  const {
-    questions: { queue, answers },
-    result: { result, userId },
-  } = useSelector((state) => state);
+
+  const { Questions, result, userId, resetAll } = useQuiz();
+  const { queue, answers } = Questions;
+
 
   const totalPoints = queue.length * 10;
   const attempts = attempts_Number(result);
@@ -31,8 +32,7 @@ export default function Result() {
   });
 
   function onRestart() {
-    dispatch(resetAllAction());
-    dispatch(resetResultAction());
+     resetAll();
   }
 
   return (
@@ -80,7 +80,7 @@ export default function Result() {
 
       <div className="container">
         {/* result table */}
-        <ResultTable></ResultTable>
+        <ResultTable />
       </div>
     </div>
   );

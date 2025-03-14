@@ -1,131 +1,97 @@
-// context/QuizContext.jsx
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useState, useContext } from 'react';
+import { getServerData, postServerData } from '../helpers/helper';
 
-// Question Reducer
-const questionReducer = (state, action) => {
-  switch (action.type) {
-    case 'START_EXAM':
-      const { question, answers } = action.payload;
-      return {
-        ...state,
-        queue: question,
-        answers
-      };
-    case 'MOVE_NEXT':
-      return {
-        ...state,
-        trace: state.trace + 1
-      };
-    case 'MOVE_PREV':
-      return {
-        ...state,
-        trace: state.trace - 1
-      };
-    case 'RESET_ALL':
-      return {
-        queue: [],
-        answers: [],
-        trace: 0
-      };
-    default:
-      return state;
-  }
-};
-
-// Result Reducer
-const resultReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_USER_ID':
-      return {
-        ...state,
-        userId: action.payload
-      };
-    case 'PUSH_RESULT':
-      return {
-        ...state,
-        result: [...state.result, action.payload]
-      };
-    case 'UPDATE_RESULT':
-      const { trace, checked } = action.payload;
-      const newResult = [...state.result];
-      newResult[trace] = checked;
-      return {
-        ...state,
-        result: newResult
-      };
-    case 'RESET_RESULT':
-      return {
-        userId: null,
-        result: []
-      };
-    default:
-      return state;
-  }
-};
-
-// Initial States
-const initialQuestionState = {
-  queue: [],
-  answers: [],
-  trace: 0
-};
-
-const initialResultState = {
-  userId: null,
-  result: []
-};
-
-// Create Context
 const QuizContext = createContext();
 
-// Provider Component
-export const QuizProvider = ({ children }) => {
-  const [questionState, questionDispatch] = useReducer(
-    questionReducer, 
-    initialQuestionState
-  );
-  const [resultState, resultDispatch] = useReducer(
-    resultReducer, 
-    initialResultState
-  );
+export function QuizProvider({ children }) {
+  const [userId, setUserId] = useState('');
+  const [result, setResult] = useState([]);
+  const [questions, setQuestions] = useState({
+    queue: [],
+    trace: 0,
+    answers: []
+  });
+  const [quizData, setQuizData] = useState({
+    isLoading: false,
+    apiData: [],
+    serverError: null
+  });
 
-  // Question Actions
-  const startExamAction = (payload) => 
-    questionDispatch({ type: 'START_EXAM', payload });
-  const moveNextAction = () => 
-    questionDispatch({ type: 'MOVE_NEXT' });
-  const movePrevAction = () => 
-    questionDispatch({ type: 'MOVE_PREV' });
-  const resetAllAction = () => 
-    questionDispatch({ type: 'RESET_ALL' });
-
-  // Result Actions
-  const setUserId = (payload) => 
-    resultDispatch({ type: 'SET_USER_ID', payload });
-  const pushResultAction = (payload) => 
-    resultDispatch({ type: 'PUSH_RESULT', payload });
-  const updateResultAction = (payload) => 
-    resultDispatch({ type: 'UPDATE_RESULT', payload });
-  const resetResultAction = () => 
-    resultDispatch({ type: 'RESET_RESULT' });
-
-  const value = {
-    questionState,
-    resultState,
-    startExamAction,
-    moveNextAction,
-    movePrevAction,
-    resetAllAction,
-    setUserId,
-    pushResultAction,
-    updateResultAction,
-    resetResultAction
+  const fetchQuestions = async () => {
+    setQuizData(prev => ({ ...prev, isLoading: true }));
+    try {
+      const [{ questions, answers }] = await getServerData(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/api/questions`,
+        (data) => data
+      );
+      if (questions.length > 0) {
+        setQuizData(prev => ({ ...prev, isLoading: false, apiData: questions }));
+        setQuestions(prev => ({ ...prev, queue: questions, answers }));
+      } else {
+        throw new Error("No Questions Available");
+      }
+    } catch (error) {
+      setQuizData(prev => ({ ...prev, isLoading: false, serverError: error }));
+    }
   };
 
-  return (
-    <QuizContext.Provider value={{value}}>
-      {children}
-    </QuizContext.Provider>
-  );
-};
+  const moveNext = () => {
+    setQuestions(prev => ({ ...prev, trace: prev.trace + 1 }));
+  };
 
+  const movePrev = () => {
+    setQuestions(prev => ({ ...prev, trace: prev.trace - 1 }));
+  };
+
+  const pushAnswer = (answer) => {
+    setResult(prev => [...prev, answer]);
+  };
+
+  const updateResult = (index, value) => {
+    setResult(prev => {
+      const newResult = [...prev];
+      newResult[index] = value;
+      return newResult;
+    });
+  };
+
+  const publishResult = async (resultData) => {
+    const { result, username } = resultData;
+    try {
+      if (result.length && !username) throw new Error("Couldn't get Result");
+      await postServerData(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/api/result`,
+        resultData,
+        data => data
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const resetAll = () => {
+    setUserId('');
+    setResult([]);
+    setQuestions({ queue: [], trace: 0, answers: [] });
+    setQuizData({ isLoading: false, apiData: [], serverError: null });
+  };
+
+  const value = {
+    userId,
+    setUserId,
+    result,
+    questions,
+    quizData,
+    fetchQuestions,
+    moveNext,
+    movePrev,
+    pushAnswer,
+    updateResult,
+    publishResult,
+    resetAll
+  };
+
+  return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;
+}
+
+export const useQuiz = () => useContext(QuizContext);
