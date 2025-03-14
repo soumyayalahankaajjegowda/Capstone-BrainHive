@@ -1,54 +1,62 @@
-import { createContext, useState, useContext } from 'react';
-import { getServerData, postServerData } from '../helpers/helper';
+import { createContext, useState, useContext } from "react";
+import { getServerData, postServerData } from "../helpers/helper";
 
 const QuizContext = createContext();
 
 export function QuizProvider({ children }) {
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [result, setResult] = useState([]);
   const [questions, setQuestions] = useState({
     queue: [],
     trace: 0,
-    answers: []
+    answers: [],
   });
   const [quizData, setQuizData] = useState({
     isLoading: false,
     apiData: [],
-    serverError: null
+    serverError: null,
   });
 
   const fetchQuestions = async () => {
-    setQuizData(prev => ({ ...prev, isLoading: true }));
+    setQuizData((prev) => ({ ...prev, isLoading: true }));
     try {
       const [{ questions, answers }] = await getServerData(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/api/questions`,
+        `${import.meta.env.VITE_SERVER_HOSTNAME}/api/questions`,
         (data) => data
       );
       if (questions.length > 0) {
-        setQuizData(prev => ({ ...prev, isLoading: false, apiData: questions }));
-        setQuestions(prev => ({ ...prev, queue: questions, answers }));
+        setQuizData((prev) => ({
+          ...prev,
+          isLoading: false,
+          apiData: questions,
+        }));
+        setQuestions((prev) => ({ ...prev, queue: questions, answers }));
       } else {
         throw new Error("No Questions Available");
       }
     } catch (error) {
-      setQuizData(prev => ({ ...prev, isLoading: false, serverError: error }));
+      setQuizData((prev) => ({
+        ...prev,
+        isLoading: false,
+        serverError: error,
+      }));
     }
   };
 
   const moveNext = () => {
-    setQuestions(prev => ({ ...prev, trace: prev.trace + 1 }));
+    setQuestions((prev) => ({ ...prev, trace: prev.trace + 1 }));
   };
 
   const movePrev = () => {
-    setQuestions(prev => ({ ...prev, trace: prev.trace - 1 }));
+    setQuestions((prev) => ({ ...prev, trace: prev.trace - 1 }));
   };
 
   const pushAnswer = (answer) => {
-    setResult(prev => [...prev, answer]);
+    setResult((prev) => [...prev, answer]);
   };
 
   const updateResult = (index, value) => {
-    setResult(prev => {
+    setResult((prev) => {
       const newResult = [...prev];
       newResult[index] = value;
       return newResult;
@@ -60,9 +68,9 @@ export function QuizProvider({ children }) {
     try {
       if (result.length && !username) throw new Error("Couldn't get Result");
       await postServerData(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/api/result`,
+        `${import.meta.env.VITE_SERVER_HOSTNAME}/api/result`,
         resultData,
-        data => data
+        (data) => data
       );
     } catch (error) {
       console.log(error);
@@ -70,7 +78,7 @@ export function QuizProvider({ children }) {
   };
 
   const resetAll = () => {
-    setUserId('');
+    setUserId("");
     setResult([]);
     setQuestions({ queue: [], trace: 0, answers: [] });
     setQuizData({ isLoading: false, apiData: [], serverError: null });
@@ -88,7 +96,7 @@ export function QuizProvider({ children }) {
     pushAnswer,
     updateResult,
     publishResult,
-    resetAll
+    resetAll,
   };
 
   return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;

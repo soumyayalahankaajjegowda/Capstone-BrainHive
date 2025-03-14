@@ -4,14 +4,14 @@ import { getServerData } from "../helpers/helper";
 export default function ResultTable() {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    getServerData(
-      `${Process.env.REACT_APP_SERVER_HOSTNAME}/api/result`,
-      (res) => {
-        setData(res);
-      }
-    );
-  }, []);
+  // useEffect(() => {
+  //   getServerData(
+  //     `${import.meta.env.VITE_SERVER_HOSTNAME}/api/result`,
+  //     (res) => {
+  //       setData(res);
+  //     }
+  //   );
+  // }, []);
 
   return (
     <div>

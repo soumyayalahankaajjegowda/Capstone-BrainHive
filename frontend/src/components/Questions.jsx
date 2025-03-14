@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-//import data from '../database/Data'
+import data from '../database/Data'
 import { useQuiz } from '../context/QuizContext';
 /**custom hook */
 import { useFetchQuestion } from '../hooks/FetchQuestion';

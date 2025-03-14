@@ -13,8 +13,9 @@ import { usePublishResult } from '../hooks/setResult';
 
 export default function Result() {
 
-  const { Questions, result, userId, resetAll } = useQuiz();
-  const { queue, answers } = Questions;
+  const { questions, result, userId, resetAll } = useQuiz();
+  console.log(useQuiz())
+  const { queue, answers } = questions;
 
 
   const totalPoints = queue.length * 10;
@@ -49,7 +50,7 @@ export default function Result() {
           <span className="bold">{totalPoints || 0}</span>
         </div>
         <div className="flex">
-          <span>Total Questions: </span>
+          <span>Total questions: </span>
           <span className="bold">{queue.length || 0}</span>
         </div>
         <div className="flex">

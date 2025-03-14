@@ -1,29 +1,49 @@
 export default [
   {
-    id: 1,
-    question: "What is the capital of the United States?",
-    options: ["New York", "Los Angeles", "Washington, D.C."],
+      id: 1,
+      question : "Javascript is an _______ language",
+      options : [
+          'Object-Oriented',
+          'Object-Based',
+          'Procedural',
+      ]
   },
   {
-    id: 2,
-    question: "Which planet is known as the Red Planet?",
-    options: ["Jupiter", "Mars", "Earth"],
+      id: 2,
+      question : "Following methods can be used to display data in some form using Javascript",
+      options : [
+          'document.write()',
+          'console.log()',
+          'window.alert()',
+      ]
   },
   {
-    id: 3,
-    question: "What is the largest ocean on Earth?",
-    options: ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean"],
+      id: 3,
+      question : "When an operator value is NULL, the typeof returned by the unary operator is:",
+      options : [
+          'Boolean',
+          'Undefined',
+          'Object',
+      ]
   },
   {
-    id: 4,
-    question: "Which fruit is known as the 'King of Fruits'?",
-    options: ["Mango", "Apple", "Banana"],
+      id: 4,
+      question : "What does the toString() method return?",
+      options : [
+          'Return Object',
+          'Return String',
+          'Return Integer'
+      ]
   },
   {
-    id: 5,
-    question: "Which bird is known for its beautiful tail feathers?",
-    options: ["Eagle", "Penguin", "Peacock"],
-  },
+      id: 5,
+      question : "Which function is used to serialize an object into a JSON string?",
+      options : [
+          'stringify()',
+          'parse()',
+          'convert()',
+      ]
+  }
 ];
 
-export const answers = [2, 1, 0, 0, 2];
+export const answers = [0, 1, 2, 1, 0];
