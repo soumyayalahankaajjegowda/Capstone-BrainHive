@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/index.css";
 import App from "./components/App";
+import { QuizProvider } from './context/QuizContext'
 
-/** Redux Store */
-import store from "./redux/store";
-import { Provider } from "react-redux";
+// /** Redux Store */
+// import store from "./redux/store";
+// import { Provider } from "react-redux";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-  <Provider store={store}>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <QuizProvider>
     <App />
-  </Provider>
-  </React.StrictMode>
+  </QuizProvider>
 );

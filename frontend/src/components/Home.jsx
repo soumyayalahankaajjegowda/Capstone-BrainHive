@@ -1,17 +1,15 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUserId } from "../redux/result_reducer";
 import "../styles/Main.css";
+import { useQuizContext } from '../context/useQuizContext';
 
 function Main() {
-  const inputRef = useRef(null);
-  const dispatch = useDispatch();
+  const inputRef = useRef<HTMLINPUTElement>(null);
+  const { setUserId } = useQuizContext();
 
-  function startQuiz(event) {
-    event.preventDefault(); // prevent form from submitting/reloading
-    if (inputRef.current?.value.trim()) {
-      dispatch(setUserId(inputRef.current?.value.trim())); //Trim unnecessary spaces
+  function startQuiz() {
+       if (inputRef.current?.value) {
+      setUserId(inputRef.current.value);
     }
   }
 
@@ -36,16 +34,12 @@ function Main() {
           type="text"
           placeholder="Username*"
         />
-        <button className="btn" type="submit">
-          Start Quiz
-        </button>
-      </form>
-
-      {/* <div className="start">
-        <Link className="btn" to={"quiz"} onClick={startQuiz}>
+        </form>
+         <div className="start">
+        <Link className="btn" to="/quiz" onClick={startQuiz}>
           Start Quiz
         </Link>
-      </div> */}
+      </div> 
     </div>
   );
 }

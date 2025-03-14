@@ -1,9 +1,9 @@
 import React from "react";
+import axios from 'axios';
 import Questions from "../components/Questions";
 
 
-/** redux store import */
-import { useSelector } from 'react-redux'
+
 import { Navigate } from 'react-router-dom'
 
 export default function Quiz() {

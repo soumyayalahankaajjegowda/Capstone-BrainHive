@@ -11,15 +11,15 @@ import Result from "./QuizResult.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main></Main>,
+    element: <Main />,
   },
   {
     path: "/quiz",
-    element: <Quiz></Quiz>,
+    element: <Quiz />,
   },
   {
     path: "/result",
-    element: <Result></Result>,
+    element: <Result />,
   },
 ]);
 

@@ -1,42 +1,18 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import data from "../database/Data";
+import { useEffect } from "react";
+import { useQuiz } from '../context/QuizContext';
 
-/** redux actions */
-import * as Action from "../redux/question_reducer";
+
+
 
 /**fetch question hook to fetch api data and set value to store */
 export const useFetchQuestion = () => {
-  const dispatch = useDispatch();
-  const [getData, setGetData] = useState({
-    isLoading: false,
-    apiData: [],
-    serverError: null,
-  });
+   const { quizData, fetchQuestions } = useQuiz();
+
 
   useEffect(() => {
-    setGetData((previous) => ({ ...previous, isLoading: true }));
+    fetchQuestions();
+  }, [fetchQuestions]);
 
-    /** async function fetch backend data */
-    (async () => {
-      try {
-        let question = await data;
-
-        if (question.length > 0) {
-          setGetData((previous) => ({ ...previous, isLoading: false }));
-          setGetData((previous) => ({ ...previous, apiData: question }));
-
-          /** dispatch an action */
-          dispatch(Action.startExamAction());
-        } else {
-          throw new Error("No Question Available");
-        }
-      } catch (error) {
-        setGetData((previous) => ({ ...previous, isLoading: false }));
-        setGetData((previous) => ({ ...previous, serverError: error }));
-      }
-    })();
-  }, [dispatch]);
-
-  return [getData, setGetData];
+  return [quizData];
 };
+
